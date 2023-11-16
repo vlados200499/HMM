@@ -1,3 +1,3 @@
-C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMM-Speech-Recognition.dir
-C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/edit_cache.dir
-C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Vlad/source/repos/vlados200499/HMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMM-Speech-Recognition.dir
+C:/Users/Vlad/source/repos/vlados200499/HMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/Vlad/source/repos/vlados200499/HMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/rebuild_cache.dir

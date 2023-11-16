@@ -42,7 +42,7 @@ public:
 
 	virtual std::pair<std::vector<int>, std::vector<double>> Viterbi(const Vector1D<int>& observations);
 
-	virtual void BaumWelch(Vector1D<double> observations);
+	virtual void BaumWelch(Vector2D<double> observations);
 
 
 	template <typename T>
@@ -88,6 +88,7 @@ public:
 
 	double Forward(const Vector1D<int> observations) override;
 	std::pair<std::vector<int>, std::vector<double>> Viterbi(const Vector1D<int>& observations) override;
+	void BaumWelch(Vector2D<double> observations) override;
 };
 
 

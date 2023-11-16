@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/Vlad/source/repos/CMM-Speech-Recognition
+# Install script for directory: C:/Users/Vlad/source/repos/vlados200499/HMM-Speech-Recognition
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/Vlad/Source/Repos/vlados200499/HMM-Speech-Recognition/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Vlad/source/repos/vlados200499/HMM-Speech-Recognition/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
