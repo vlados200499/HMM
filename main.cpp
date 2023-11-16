@@ -3,41 +3,53 @@
 #include "model/HMM.h"
 
 
+
+
 int main()
 {
-	//                      HOT / COLD
-	std::vector<int> state = {0, 1};
+	
 
-	std::vector<double> start_prob = {0.5, 0.5};
+	std::vector start_prob = {0.5, 0.5};
 
 	std::vector<std::vector<double>> trans_prob = {
-		{0.5, 0.5}, // HOT
-		{0.5, 0.5}, // COLD
-	}; 
+		{0.001, 0.45}, // HOT
+		{0.94, 0.935}, // COLD
+	};
 	std::vector<std::vector<double>> emission_prob = {
-		{0.0, 0.2, 0.7, 0.9, 0.3} , // HOT
-		{0.9, 0.8, 0.6, 0.3, 0.0},  // COLD
-	}; 
+		{0.995, 0.057, 0.45, 0.235, 0.135}, // HOT
+		{0.035, 0.45675, 0.45, 0.425, 0.24435}, // COLD
+	};
 
+
+	
+
+
+
+
+	
+
+
+
+
+	const Vector1D<int> observation_data = {0, 1, 2, 3, 4};
 	std::vector<std::string> states = {"HOT", "COLD"};
 
+	PolynomialHMM model(2,4, start_prob, trans_prob, emission_prob);
+	
+	
 
-	PolynomialHMM model(state, start_prob, trans_prob, emission_prob);
+
+	Vector2D<int> observationDataJdj = {{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,0,2,1,2,2,1,3,2,3,2},{0,0,2,1,2,2,1,3,2,3,2},{0,0,2,1,2,2,1,3,2,3,2}
+	,{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},{0,1,2,1,2,2,1,3,2,3,2},};
+	//model.BaumWelch(observation_data_jdj);
+	//double logLikelihood = model.ComputeLogLikelihood(observation_data_jdj);
+    
+    //std::cout << "Log Likelihood after training: " << logLikelihood << std::endl;
+	model.Train(1000,0.000001,observationDataJdj);
+	const double forward_pr = model.Forward({0, 2, 1,4,0,0,0,0});
+	std::cout << "Total Probability: " << forward_pr << std::endl;
 
 
-	//const double forward_pr = model.Forward({0,3,3,3,0,3,0,1});
-	//std::cout << "Total Probability: " << forward_pr << std::endl;
-
-	const auto result = model.Viterbi({0,3,2,0});
-
-	std::cout << "Best Path: ";
-	for (const int state1 : result.first)
-	{
-		std::cout << states[state1] << " ";
-	}
-	for (const auto & prop : result.second)
-	{
-		std::cout << "\nBest Path Probability: " << prop << std::endl;
-		
-	}
+	//ogLikelihood = model.ComputeLogLikelihood(observation_data_jdj);
+	//std::cout << "Log Likelihood after training: " << logLikelihood << std::endl;
 }

@@ -23,8 +23,8 @@ events:
       
       The output was:
       0
-      Оптимизирующий компилятор Microsoft (R) C/C++ версии 19.36.32534 для x64
-      (C) Корпорация Майкрософт (Microsoft Corporation).  Все права защищены.
+      Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32534 for x64
+      Copyright (C) Microsoft Corporation.  All rights reserved.
       
       CMakeCCompilerId.c
       Microsoft (R) Incremental Linker Version 14.36.32534.0
@@ -51,9 +51,9 @@ events:
     message: |
       Detecting C compiler /showIncludes prefix:
         main.c
-        Примечание: включение файла:  C:\\Users\\Vlad\\source\\repos\\CMM-Speech-Recognition\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\Vlad\\source\\repos\\CMM-Speech-Recognition\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
-      Found prefix "Примечание: включение файла:  "
+      Found prefix "Note: including file: "
   -
     kind: "message-v1"
     backtrace:
@@ -69,8 +69,8 @@ events:
       
       The output was:
       0
-      Оптимизирующий компилятор Microsoft (R) C/C++ версии 19.36.32534 для x64
-      (C) Корпорация Майкрософт (Microsoft Corporation).  Все права защищены.
+      Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32534 for x64
+      Copyright (C) Microsoft Corporation.  All rights reserved.
       
       CMakeCXXCompilerId.cpp
       Microsoft (R) Incremental Linker Version 14.36.32534.0
@@ -97,9 +97,9 @@ events:
     message: |
       Detecting CXX compiler /showIncludes prefix:
         main.c
-        Примечание: включение файла:  C:\\Users\\Vlad\\source\\repos\\CMM-Speech-Recognition\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
+        Note: including file: C:\\Users\\Vlad\\source\\repos\\CMM-Speech-Recognition\\out\\build\\x64-debug\\CMakeFiles\\ShowIncludes\\foo.h
         
-      Found prefix "Примечание: включение файла:  "
+      Found prefix "Note: including file: "
   -
     kind: "try_compile-v1"
     backtrace:
@@ -109,8 +109,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-03x502"
-      binary: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-03x502"
+      source: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-91lor6"
+      binary: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-91lor6"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Ob0 /Od /RTC1"
@@ -120,10 +120,10 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-03x502
+        Change Dir: C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-91lor6
         
-        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe -v cmTC_af525 && [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_af525.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_af525.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_af525.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_af525.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_af525.exe /implib:cmTC_af525.lib /pdb:cmTC_af525.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe -v cmTC_1e755 && [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS /W3  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_1e755.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_1e755.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_1e755.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100220~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100220~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_1e755.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_1e755.exe /implib:cmTC_1e755.lib /pdb:cmTC_1e755.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -135,8 +135,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-xdpxc5"
-      binary: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-xdpxc5"
+      source: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-lmxyyi"
+      binary: "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-lmxyyi"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/MDd /Ob0 /Od /RTC1"
@@ -146,10 +146,10 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-xdpxc5
+        Change Dir: C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/CMakeFiles/CMakeScratch/TryCompile-lmxyyi
         
-        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe -v cmTC_60df5 && [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_60df5.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_60df5.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
-        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_60df5.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100226~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_60df5.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_60df5.exe /implib:cmTC_60df5.lib /pdb:cmTC_60df5.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe -v cmTC_73a32 && [1/2] C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /MDd /Ob0 /Od /RTC1 -Zi /showIncludes /FoCMakeFiles\\cmTC_73a32.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_73a32.dir\\ /FS -c "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
+        [2/2] cmd.exe /C "cd . && "C:\\Program Files\\Microsoft Visual Studio\\2022\\Professional\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_73a32.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100220~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100220~1.0\\x64\\mt.exe --manifests  -- C:\\PROGRA~1\\MICROS~1\\2022\\PROFES~1\\VC\\Tools\\MSVC\\1436~1.325\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_73a32.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_73a32.exe /implib:cmTC_73a32.lib /pdb:cmTC_73a32.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
 ...
