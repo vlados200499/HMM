@@ -1,7 +1,0 @@
-# ninja log v5
-8	1653	7209784812185619	CMakeFiles/CMM-Speech-Recognition.dir/model/HMM.cpp.obj	a90fd8bac9c27735
-2	1662	7209784812185619	CMakeFiles/CMM-Speech-Recognition.dir/main.cpp.obj	f9ed0016df7f64b8
-1662	2127	7209784816839185	CMM-Speech-Recognition.exe	1d82d4b58c18c6c8
-46	1858	7209812387734569	CMakeFiles/CMM-Speech-Recognition.dir/main.cpp.obj	f9ed0016df7f64b8
-52	1874	7209812387943864	CMakeFiles/CMM-Speech-Recognition.dir/model/HMM.cpp.obj	a90fd8bac9c27735
-1874	2140	7209812390015087	CMM-Speech-Recognition.exe	1d82d4b58c18c6c8
