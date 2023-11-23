@@ -1,35 +1,14 @@
 ﻿#include "HMM.h"
 
-#include <algorithm>
-#include <numeric>
-#include <random>
-
-HMM::~HMM()
-{
-}
-
-double HMM::Forward(const Vector1D<int> observations)
-{
-	return 0;
-}
-
-std::pair<std::vector<int>, double> HMM::Viterbi(const Vector1D<int>& observations)
-{
-	return {};
-}
-
-void HMM::BaumWelch(Vector1D<int>& observations)
-{
-}
 
 
-double PolynomialHMM::Forward(const Vector1D<int> observations)
+
+double vladosHMM::HMM::Forward(const Vector1D<int> observations)
 {
 	const int observation_size = observations.size();
 
 
 	Vector2D<double> forward(observation_size, std::vector<double>(states_size, 0.0));
-	//probability matrix  [STATE/OBSERVATION] = PROBABILITY
 
 
 	for (auto i = 0; i < states_size; ++i)
@@ -62,7 +41,7 @@ double PolynomialHMM::Forward(const Vector1D<int> observations)
 	return sum;
 }
 
-std::pair<std::vector<int>, double> PolynomialHMM::Viterbi(const Vector1D<int>& observations)
+std::pair<std::vector<int>, double> vladosHMM::HMM::Viterbi(const Vector1D<int>& observations)
 {
 	const int observation_size = observations.size();
 
@@ -113,7 +92,7 @@ std::pair<std::vector<int>, double> PolynomialHMM::Viterbi(const Vector1D<int>& 
 
 
 // Execute E-step
-auto PolynomialHMM::ForwardPass(const Vector1D<int>& observations) const
+Vector2D<double> vladosHMM::HMM::ForwardPass(const Vector1D<int>& observations)
 {
 	const int observation_size = observations.size();
 
@@ -142,7 +121,7 @@ auto PolynomialHMM::ForwardPass(const Vector1D<int>& observations) const
 }
 
 
-auto PolynomialHMM::BackwardPass(const Vector1D<int>& observations) const
+Vector2D<double> vladosHMM::HMM::BackwardPass(const Vector1D<int>& observations)
 {
 	const int observation_size = observations.size();
 
@@ -166,34 +145,34 @@ auto PolynomialHMM::BackwardPass(const Vector1D<int>& observations) const
 	return backward;
 }
 
-auto PolynomialHMM::CalculateGammas(const Vector2D<double>& forward, const Vector2D<double>& backward,
-                                    const int observation_size) const
+Vector2D<double> vladosHMM::HMM::CalculateGammas(const Vector2D<double>& forward, const Vector2D<double>& backward,
+                                                 const int observation_size)
 {
-	Vector2D<double> gamma(observation_size, Vector1D<double>(states_size, -1.0));
+	Vector2D<double> gamma(observation_size, Vector1D<double>(states_size, 0.0));
 
 
 	for (auto t = 0; t < observation_size; ++t)
 	{
+		double denominator = 0.0;
 		for (int i = 0; i < states_size; ++i)
 		{
 			gamma[t][i] = forward[t][i] * backward[t][i];
 
-			double denominator = 0.0;
 			for (auto j = 0; j < states_size; ++j)
 			{
 				denominator += forward[t][j] * backward[t][j];
 			}
 
-			gamma[t][i] /= denominator;
+			gamma[t][i] = gamma[t][i] / (denominator + EPSILON);
 		}
 	}
 	return gamma;
 }
 
-auto PolynomialHMM::CalculateXis(const Vector1D<int>& observations, const Vector2D<double>& forward,
-                                 const Vector2D<double>& backward, const int observation_size) const
+Vector3D<double> vladosHMM::HMM::CalculateXis(const Vector1D<int>& observations, const Vector2D<double>& forward,
+                                              const Vector2D<double>& backward, const int observation_size)
 {
-	Vector3D<double> xi(observation_size, Vector2D<double>(states_size, Vector1D<double>(states_size, 0.0)));
+	Vector3D<double> xi(observation_size - 1, Vector2D<double>(states_size, Vector1D<double>(states_size, 0.0)));
 	for (int t = 0; t < observation_size - 1; ++t)
 	{
 		double denominator = 0.0;
@@ -205,12 +184,13 @@ auto PolynomialHMM::CalculateXis(const Vector1D<int>& observations, const Vector
 					[j];
 			}
 		}
+
 		for (int i = 0; i < states_size; ++i)
 		{
 			for (int j = 0; j < states_size; ++j)
 			{
 				xi[t][i][j] = forward[t][i] * trans_prob[i][j] * emission_prob[j][observations[t + 1]] * backward[t + 1]
-					[j] / denominator;
+					[j] / (denominator + EPSILON);
 			}
 		}
 	}
@@ -219,7 +199,7 @@ auto PolynomialHMM::CalculateXis(const Vector1D<int>& observations, const Vector
 
 
 // Execute M-step
-void PolynomialHMM::UpdatingInitialProbabilities(const Vector2D<double>& gamma)
+void vladosHMM::HMM::UpdatingInitialProbabilities(const Vector2D<double>& gamma)
 {
 	for (int i = 0; i < states_size; ++i)
 	{
@@ -227,8 +207,8 @@ void PolynomialHMM::UpdatingInitialProbabilities(const Vector2D<double>& gamma)
 	}
 }
 
-void PolynomialHMM::UpdatingTransitionMatrix(const Vector2D<double>& gamma, const Vector3D<double>& xi,
-                                             const int observation_size)
+void vladosHMM::HMM::UpdatingTransitionMatrix(const Vector2D<double>& gamma, const Vector3D<double>& xi,
+                                              const int observation_size)
 {
 	for (int i = 0; i < states_size; ++i)
 	{
@@ -252,8 +232,8 @@ void PolynomialHMM::UpdatingTransitionMatrix(const Vector2D<double>& gamma, cons
 	}
 }
 
-void PolynomialHMM::UpdatingObservationProbabilityMatrix(const Vector1D<int>& observations,
-                                                         const Vector2D<double>& gamma, const int observation_size)
+void vladosHMM::HMM::UpdatingObservationProbabilityMatrix(const Vector1D<int>& observations,
+                                                          const Vector2D<double>& gamma, const int observation_size)
 {
 	for (int i = 0; i < states_size; ++i)
 	{
@@ -263,19 +243,33 @@ void PolynomialHMM::UpdatingObservationProbabilityMatrix(const Vector1D<int>& ob
 			double denominator = 0.0;
 			for (int t = 0; t < observation_size; ++t)
 			{
-				if (i == j)
+				if (observations[t] == j)
 				{
 					numerator += gamma[t][i];
 				}
 				denominator += gamma[t][i];
 			}
-			emission_prob[i][j] = numerator / denominator;
+			emission_prob[i][j] = numerator / (denominator + EPSILON);
 		}
 	}
 }
 
+void vladosHMM::HMM::UpdateModelParameters(Vector1D<int>& observations, const int size, const Vector2D<double> gamma,
+                                           const Vector3D<double> xi)
+{
+	// Updating Initial Probabilities
+	UpdatingInitialProbabilities(gamma);
+
+	// Updating the transition matrix
+	UpdatingTransitionMatrix(gamma, xi, size);
+
+	//Updating the Observation Probability Matrix
+	UpdatingObservationProbabilityMatrix(observations, gamma, size);
+}
+
+
 // Training
-void PolynomialHMM::BaumWelch(Vector1D<int>& observations)
+void vladosHMM::HMM::BaumWelch(Vector1D<int>& observations)
 {
 	const auto size = static_cast<int>(observations.size());
 
@@ -291,32 +285,23 @@ void PolynomialHMM::BaumWelch(Vector1D<int>& observations)
 	// Xi
 	const auto xi = CalculateXis(observations, forward, backward, size);
 
-	// Updating Initial Probabilities
-	UpdatingInitialProbabilities(gamma);
-
-	// Updating the transition matrix
-	UpdatingTransitionMatrix(gamma, xi, size);
-
-	//Updating the Observation Probability Matrix
-	//UpdatingObservationProbabilityMatrix(observations, gamma, size);
+	UpdateModelParameters(observations, size, gamma, xi);
+	//return std::make_pair(gamma,xi);
 }
 
-double PolynomialHMM::ComputeLogLikelihood(const Vector1D<int>& observations) const
+double vladosHMM::HMM::ComputeLogLikelihood(const Vector1D<int>& observations)
 {
 	auto observation_size = observations.size();
 	auto forward = ForwardPass(observations);
 
-	// Последний временной шаг
-	int lastTimeStep = observation_size - 1;
+	const int lastTimeStep = observation_size - 1;
 
-	// Вычисление логарифма правдоподобия
 	double logLikelihood = -std::log(std::accumulate(forward[lastTimeStep].begin(), forward[lastTimeStep].end(), 0.0));
 
 	return logLikelihood;
 }
 
-
-void PolynomialHMM::Train(int maxIterations, double convergenceThreshold, Vector1D<int>& observations)
+void vladosHMM::HMM::Train(const int maxIterations, const double convergenceThreshold, Vector1D<int>& observations)
 {
 	int iteration = 0;
 	//double prevLogLikelihood = -std::numeric_limits<double>::infinity();
@@ -329,87 +314,18 @@ void PolynomialHMM::Train(int maxIterations, double convergenceThreshold, Vector
 		BaumWelch(observations);
 
 		// Проверка на сходимость
-		const double logLikelihood = ComputeLogLikelihood(observations); // Ваш метод для вычисления логарифма правдоподобия
+		const double logLikelihood = ComputeLogLikelihood(observations);
+		// Ваш метод для вычисления логарифма правдоподобия
 		std::cout << logLikelihood << std::endl;
 		if (std::abs(logLikelihood - prevLogLikelihood) < convergenceThreshold)
 		{
 			std::cout << "Converged after " << iteration + 1 << " iterations.\n";
 			break;
 		}
-
-		// Обновление предыдущего логарифма правдоподобия
+		//UpdateModelParameters(observations,otrain_update.first,train_update.second);
 		prevLogLikelihood = logLikelihood;
 
 		// Увеличение счетчика итераций
 		++iteration;
-	}
-}
-
-void PolynomialHMM::Train(int maxIterations, double convergenceThreshold, const Vector2D<int>& observations)
-{
-	int iteration = 0;
-	//double prevLogLikelihood = -std::numeric_limits<double>::infinity();
-
-	double prevLogLikelihood = -std::numeric_limits<double>::infinity();
-	bool doing  = true;
-	while (iteration < maxIterations && doing)
-	{
-		for (auto observation : observations)
-		{
-			BaumWelch(observation);
-			double logLikelihood = ComputeLogLikelihood(observation);
-			// Ваш метод для вычисления логарифма правдоподобия
-			std::cout << logLikelihood << std::endl;
-			if (std::abs(logLikelihood - prevLogLikelihood) < convergenceThreshold)
-			{
-				std::cout << "Converged after " << iteration + 1 << " iterations.\n";
-				doing = false;
-				break;
-			}
-
-			// Обновление предыдущего логарифма правдоподобия
-			prevLogLikelihood = logLikelihood;
-
-			// Увеличение счетчика итераций
-			++iteration;
-		}
-		
-		// Проверка на сходимость
-	}
-}
-
-void PolynomialHMM::Train(int maxIterations, double convergenceThreshold, const Vector3D<int>& observations)
-{
-	int iteration = 0;
-	//double prevLogLikelihood = -std::numeric_limits<double>::infinity();
-
-	double prevLogLikelihood = -std::numeric_limits<double>::infinity();
-
-	while (iteration < maxIterations)
-	{
-		// Выполнение одной итерации обучения
-		for (const auto& observation2D : observations)
-		{
-			for (auto observation : observation2D)
-			{
-				BaumWelch(observation);
-
-				// Проверка на сходимость
-				double logLikelihood = ComputeLogLikelihood(observation);
-				// Ваш метод для вычисления логарифма правдоподобия
-				std::cout << logLikelihood << std::endl;
-				if (std::abs(logLikelihood - prevLogLikelihood) < convergenceThreshold)
-				{
-					std::cout << "Converged after " << iteration + 1 << " iterations.\n";
-					break;
-				}
-
-				// Обновление предыдущего логарифма правдоподобия
-				prevLogLikelihood = logLikelihood;
-
-				// Увеличение счетчика итераций
-				++iteration;
-			}
-		}
 	}
 }
