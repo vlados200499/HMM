@@ -2,7 +2,6 @@
 #include <numeric>
 #include <Vector.h>
 
-
 namespace vladosHMM
 {
 	class HMM;

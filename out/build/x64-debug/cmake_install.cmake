@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/Vlad/source/repos/CMM-Speech-Recognition
+# Install script for directory: C:/Users/Vlad/source/repos/vlados200499/HMM
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/install/x64-debug")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/Vlad/source/repos/vlados200499/HMM/out/install/x64-debug")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,6 +32,13 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for each subdirectory.
+  include("C:/Users/Vlad/source/repos/vlados200499/HMM/out/build/x64-debug/_deps/cxxopts-build/cmake_install.cmake")
+  include("C:/Users/Vlad/source/repos/vlados200499/HMM/out/build/x64-debug/_deps/nlohmann_json-build/cmake_install.cmake")
+
+endif()
+
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
@@ -40,5 +47,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/Vlad/source/repos/CMM-Speech-Recognition/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Vlad/source/repos/vlados200499/HMM/out/build/x64-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
