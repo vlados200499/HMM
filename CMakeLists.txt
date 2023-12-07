@@ -13,7 +13,7 @@ endif()
 
 
 
-project ("HMM-Speech-Recognition" VERSION 1.0)
+project ("HMM" VERSION 1.0)
 
 
 #Install CXXOPTS
@@ -44,9 +44,9 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-add_executable(HMM-Speech-Recognition main.cpp ${SRC_FILES})
-target_include_directories(HMM-Speech-Recognition PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(HMM-Speech-Recognition PRIVATE cxxopts nlohmann_json::nlohmann_json)
+add_executable(HMM main.cpp ${SRC_FILES})
+target_include_directories(HMM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(HMM PRIVATE cxxopts nlohmann_json::nlohmann_json)
 
 
 

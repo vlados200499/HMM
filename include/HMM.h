@@ -2,7 +2,7 @@
 #include <numeric>
 #include <Vector.h>
 
-namespace vladosHMM
+namespace HMMlearn
 {
 	class HMM;
 
@@ -16,7 +16,7 @@ namespace vladosHMM
 		Vector2D<double> trans_prob;
 		Vector2D<double> emission_prob;
 		int states_size;
-		int EPSILON = 1e-9;
+		double epsilon = 1e-5;
 
 	public:
 		VIRTUAL_HMM(int n_states, int n_observations, const Vector1D<double>& start_prob = {},
@@ -30,7 +30,7 @@ namespace vladosHMM
 
 			if (!start_prob.data())
 			{
-				this->start_prob = GenerateRandomVector(n_states, 0.0+EPSILON, 1.0-EPSILON);
+				this->start_prob = GenerateRandomVector(n_states, 0.4, 0.6);
 			}
 			else
 			{
@@ -38,7 +38,7 @@ namespace vladosHMM
 			}
 			if (!trans_prob.data())
 			{
-				this->trans_prob = GenerateRandomVector(n_states,n_states, 0.0+EPSILON, 1.0-EPSILON);
+				this->trans_prob = GenerateRandomVector(n_states,n_states, 0.4, 0.6);
 			}
 			else
 			{
@@ -46,7 +46,7 @@ namespace vladosHMM
 			}
 			if (!emission_prob.data())
 			{
-				this->emission_prob = GenerateRandomVector(n_states,n_observations, 0.0+EPSILON, 1.0-EPSILON);
+				this->emission_prob = GenerateRandomVector(n_states,n_observations, 0.4, 0.6);
 			}
 			else
 			{
@@ -59,7 +59,7 @@ namespace vladosHMM
 
 
 		virtual double Forward(Vector1D<int> observations) = 0;
-		virtual std::pair<std::vector<int>, double> Viterbi(const Vector1D<int>& observations) =0;
+		virtual std::pair<std::vector<int>, double> Viterbi(const Vector1D<int>& observations) = 0;
 		virtual void BaumWelch(Vector1D<int>& observations) = 0;
 		virtual void Train(const int maxIterations, const double convergenceThreshold, Vector1D<int>& observations) = 0;
 
@@ -118,4 +118,8 @@ namespace vladosHMM
 		                              int observation_size) override;
 		void UpdatingInitialProbabilities(const Vector2D<double>& gamma) override;
 	};
+
+
+	
+
 }

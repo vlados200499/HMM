@@ -7,7 +7,7 @@
 #include <chrono>
 #include <HMM.h>
 using json = nlohmann::json;
-using HMM = vladosHMM::HMM;
+using HMM = HMMlearn::HMM;
 
 class JSONParser
 {

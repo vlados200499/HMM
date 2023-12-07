@@ -50,7 +50,6 @@ T GenerateRandomNumber(T start, T end)
 {
 	std::random_device rd;
 	std::mt19937 rng(rd());
-
 	if constexpr (std::is_integral_v<T>)
 	{
 		std::uniform_int_distribution<T> distribution(start, end);
