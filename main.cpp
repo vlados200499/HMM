@@ -13,6 +13,8 @@ int main(int argc, char* argv[])
 		{0, 1, 3, 3, 2, 3, 2, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1, 0, 2, 1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 4, 3, 2, 1, 2, 1}
 
 	};
+	
+
 
 	std::cout << "Print emission prob" << std::endl;
 	PrintVector(model.emission_prob);
