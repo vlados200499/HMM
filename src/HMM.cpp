@@ -1,45 +1,7 @@
 ﻿#include "HMM.h"
 
 
-double HMMlearn::HMM::Forward(const Vector1D<int> observations)
-{
-	const int observation_size = observations.size();
-
-
-	Vector2D<double> forward(observation_size, std::vector<double>(states_size, 0.0));
-
-
-	for (auto i = 0; i < states_size; ++i)
-	{
-		forward[0][i] = start_prob[i] * emission_prob[i][observations[0]];
-	}
-
-
-	for (auto t = 1; t < observation_size; ++t)
-	{
-		// Target states 
-		for (auto i = 0; i < states_size; ++i)
-		{
-			// int i is - all states in previous layer
-			for (auto j = 0; j < states_size; ++j)
-			{
-				forward[t][i] += trans_prob[i][j] * forward[t - 1][j];
-			}
-			forward[t][i] *= emission_prob[i][observations[t]];
-		}
-	}
-	auto sum = 0.0;
-	for (const auto& value : forward)
-	{
-		for (const double value1 : value)
-		{
-			sum += value1;
-		}
-	}
-	return sum;
-}
-
-std::pair<std::vector<int>, double> HMMlearn::HMM::Viterbi(const Vector1D<int>& observations)
+std::pair<std::vector<int>, double> HMMlearn::HMM::Viterbi(const Vector1D<int>& observations) const
 {
 	const int observation_size = observations.size();
 
@@ -90,7 +52,7 @@ std::pair<std::vector<int>, double> HMMlearn::HMM::Viterbi(const Vector1D<int>& 
 
 
 // Execute E-step
-Vector2D<double> HMMlearn::HMM::ForwardPass(const Vector1D<int>& observations)
+Vector2D<double> HMMlearn::HMM::ForwardPass(const Vector1D<int>& observations) const
 {
 	const int observation_size = observations.size();
 
@@ -119,11 +81,11 @@ Vector2D<double> HMMlearn::HMM::ForwardPass(const Vector1D<int>& observations)
 }
 
 
-Vector2D<double> HMMlearn::HMM::BackwardPass(const Vector1D<int>& observations)
+Vector2D<double> HMMlearn::HMM::BackwardPass(const Vector1D<int>& observations) const
 {
 	const int observation_size = observations.size();
 
-	Vector2D<double> backward(observation_size, Vector1D<double>(states_size, 0.0));
+	Vector2D<double> backward(observation_size, Vector1D<double>(states_size, 1e-9));
 	for (auto i = 0; i < states_size; ++i)
 	{
 		backward[observation_size - 1][i] = 1;
@@ -133,47 +95,48 @@ Vector2D<double> HMMlearn::HMM::BackwardPass(const Vector1D<int>& observations)
 	{
 		for (auto i = 0; i < states_size; ++i)
 		{
-			Vector1D<double> temp_probability_on_;
+			double sum = 0;
 			for (auto j = 0; j < states_size; ++j)
 			{
-				backward[t][i] += trans_prob[i][j] * emission_prob[i][observations[t + 1]] * backward[t + 1][i];
+				sum += trans_prob[i][j] * emission_prob[j][observations[t + 1]] * backward[t + 1][j];
 			}
+			backward[t][i] += sum;
 		}
 	}
 	return backward;
 }
 
 Vector2D<double> HMMlearn::HMM::CalculateGammas(const Vector2D<double>& forward, const Vector2D<double>& backward,
-                                                const int observation_size)
+                                                const int observation_size) const
 {
-	Vector2D<double> gamma(observation_size, Vector1D<double>(states_size, 0.0));
+	Vector2D<double> gamma(observation_size, Vector1D<double>(states_size, 1e-9));
 
 
 	for (auto t = 0; t < observation_size; ++t)
 	{
 		auto denominator = 0.0;
+
 		for (auto i = 0; i < states_size; ++i)
 		{
 			gamma[t][i] = forward[t][i] * backward[t][i];
-
-			for (auto j = 0; j < states_size; ++j)
-			{
-				denominator += forward[t][j] * backward[t][j];
-			}
-			if (denominator == 0.0)
-			{
-				std::cout << "Gamma = 0.0" << std::endl;
-			}
-			gamma[t][i] = gamma[t][i] / denominator;
+			denominator += forward[t][i] * backward[t][i];
+		}
+		if (denominator == 0.0)
+		{
+			throw;
+		}
+		for (int i = 0; i < states_size; ++i)
+		{
+			gamma[t][i] /= denominator;
 		}
 	}
 	return gamma;
 }
 
 Vector3D<double> HMMlearn::HMM::CalculateXis(const Vector1D<int>& observations, const Vector2D<double>& forward,
-                                             const Vector2D<double>& backward, const int observation_size)
+                                             const Vector2D<double>& backward, const int observation_size) const
 {
-	Vector3D<double> xi(observation_size - 1, Vector2D<double>(states_size, Vector1D<double>(states_size, 0.0)));
+	Vector3D<double> xi(observation_size - 1, Vector2D<double>(states_size, Vector1D<double>(states_size, 1e-9)));
 	for (auto t = 0; t < observation_size - 1; ++t)
 	{
 		auto denominator = 0.0;
@@ -182,15 +145,14 @@ Vector3D<double> HMMlearn::HMM::CalculateXis(const Vector1D<int>& observations, 
 			for (auto j = 0; j < states_size; ++j)
 			{
 				denominator += forward[t][i] * trans_prob[i][j] * emission_prob[j][observations[t + 1]] * backward[t +
-						1]
-					[j];
+					1][j];
 			}
 		}
 		if (denominator == 0.0)
 		{
-			std::cout << "Xis = 0.0" << std::endl;
+			throw;
 		}
-		for (auto i = 0; i < states_size; ++i)
+		for (int i = 0; i < states_size; ++i)
 		{
 			for (auto j = 0; j < states_size; ++j)
 			{
@@ -217,24 +179,23 @@ void HMMlearn::HMM::UpdatingTransitionMatrix(const Vector2D<double>& gamma, cons
 {
 	for (auto i = 0; i < states_size; ++i)
 	{
-		auto denominator = 0.0;
-		for (auto t = 0; t < observation_size - 1; ++t)
-		{
-			for (auto k = 0; k < states_size; ++k)
-			{
-				denominator += xi[t][i][k];
-			}
-		}
 		for (auto j = 0; j < states_size; ++j)
 		{
+			auto denominator = 0.0;
 			auto numerator = 0.0;
 			for (auto t = 0; t < observation_size - 1; ++t)
 			{
+				denominator += gamma[t][i];
 				numerator += xi[t][i][j];
 			}
-			trans_prob[i][j] = numerator / denominator;
+			if (denominator == 0.0 || numerator == 0.0 )
+			{
+					throw;
+			}
+			trans_prob[i][j] += numerator / denominator;
 		}
 	}
+	//NormalizeVector(&trans_prob);
 }
 
 void HMMlearn::HMM::UpdatingObservationProbabilityMatrix(const Vector1D<int>& observations,
@@ -253,14 +214,19 @@ void HMMlearn::HMM::UpdatingObservationProbabilityMatrix(const Vector1D<int>& ob
 					numerator += gamma[t][i];
 				}
 				denominator += gamma[t][i];
+				if (denominator == 0.0)
+				{
+					throw;
+				}
 			}
-			emission_prob[i][j] = numerator / (denominator + epsilon);
+			emission_prob[i][j] = numerator / denominator;
 		}
 	}
 }
 
-void HMMlearn::HMM::UpdateModelParameters(Vector1D<int>& observations, const int size, const Vector2D<double> gamma,
-                                          const Vector3D<double> xi)
+void HMMlearn::HMM::UpdateModelParameters(const Vector1D<int>& observations, const int size, const Vector2D<double>&
+                                          gamma,
+                                          const Vector3D<double>& xi)
 {
 	// Updating Initial Probabilities
 	UpdatingInitialProbabilities(gamma);
@@ -274,70 +240,69 @@ void HMMlearn::HMM::UpdateModelParameters(Vector1D<int>& observations, const int
 
 
 // Training
-void HMMlearn::HMM::BaumWelch(Vector1D<int>& observations)
+void HMMlearn::HMM::BaumWelch(const Vector1D<int>& observations)
 {
-	const auto size = static_cast<int>(observations.size());
+	const auto size = observations.size();
 
 	// Forward
-	const auto forward = ForwardPass(observations);
+	auto forward = ForwardPass(observations);
 
 	// Backward
-	const auto backward = BackwardPass(observations);
+	NormalizeVector(&forward);
+
+
+	auto backward = BackwardPass(observations);
+	//NormalizeVector(&backward);
 
 	//Calculation of posterior probabilities
-	const auto gamma = CalculateGammas(forward, backward, size);
-
+	auto gamma = CalculateGammas(forward, backward, size);
+	//NormalizeVector(&gamma);
 	// Xi
 	const auto xi = CalculateXis(observations, forward, backward, size);
 
 	UpdateModelParameters(observations, size, gamma, xi);
-	//return std::make_pair(gamma,xi);
 }
 
-double HMMlearn::HMM::ComputeLogLikelihood(const Vector1D<int>& observations)
+
+double HMMlearn::HMM::Loss(const Vector1D<int>& observations) const
 {
 	const auto observation_size = observations.size();
-	auto forward = ForwardPass(observations);
+	const auto forward = ForwardPass(observations);
 
-	const int lastTimeStep = observation_size - 1;
+	double log_likelihood = 0.0;
+	for (int state = 0; state < states_size; ++state)
+	{
+		log_likelihood += forward[observation_size - 1][state];
+	}
 
-	// Calculate negative log likelihood
-	const double negLogLikelihood = -std::log(
-		std::accumulate(forward[lastTimeStep].begin(), forward[lastTimeStep].end(), 0.0));
-
-	// Normalize by the number of observations
-	double loss = negLogLikelihood / observation_size;
-
-	// Clamp the loss between 0 and 1
-	loss = std::min(1.0, std::max(0.0, loss));
-
-	return loss;
+	return -log(log_likelihood) / n_observations;
 }
 
-void HMMlearn::HMM::Train(const int maxIterations, const double convergenceThreshold, Vector1D<int>& observations)
+void HMMlearn::HMM::Train(const int maxIterations, const double convergenceThreshold, const Vector1D<int>& observations)
 {
 	auto iteration = 0;
 	double prevLoss = std::numeric_limits<double>::infinity();
 
 	while (iteration < maxIterations)
 	{
-		// Perform one iteration of training
+		// Perform one iteration of training using the Baum-Welch algorithm
 		BaumWelch(observations);
 
-		// Compute the normalized loss
-		const double loss = ComputeLogLikelihood(observations);
-		std::cout << "Normalized Loss: " << loss << std::endl;
+		// Compute the negative log-likelihood (loss)
+		const double loss = Loss(observations);
+		std::cout << " Loss: " << loss << std::endl;
 
 		// Check for convergence
-		if (std::abs(loss - prevLoss) < convergenceThreshold)
+		if (iteration > 0 && std::abs(prevLoss - loss) < convergenceThreshold)
 		{
 			std::cout << "Converged after " << iteration + 1 << " iterations.\n";
 			break;
 		}
 
+		// Update the previous loss for the next iteration
 		prevLoss = loss;
 
-		// Increase iteration counter
+		//Increase iteration counter
 		++iteration;
 	}
 }

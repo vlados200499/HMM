@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt: проект CMake для CMM-Speech-Recognition; включите исходный код и определения,
 # укажите здесь логику для конкретного проекта.
 #
-cmake_minimum_required (VERSION 3.12)
+cmake_minimum_required (VERSION 3.24)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Enable Hot Reload for MSVC compilers if supported.
@@ -27,10 +27,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cxxopts)
 
 
-
-
-
-
 #Install JSON
 set(JSON_VERSION 3.11.2)
 FetchContent_Declare(
@@ -39,6 +35,10 @@ FetchContent_Declare(
     GIT_TAG v${JSON_VERSION}
 )
 FetchContent_MakeAvailable(nlohmann_json)
+
+
+
+
 
 
 

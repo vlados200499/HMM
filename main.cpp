@@ -1,22 +1,41 @@
 ﻿#include "Tester.h"
+#
 
-
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
 	Tester test;
 	test.Run(argc, argv);
 
-	HMM model(2, 5);
+	HMM model(2, 300);
 
-	Vector2D<int> observations = {
-		{0, 1, 2, 3, 2, 3, 2, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1, 0, 2, 1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 4, 3, 2, 1, 2, 1},
-		{0, 1, 3, 3, 2, 3, 2, 1, 1, 2, 1, 2, 3, 4, 3, 2, 1, 0, 2, 1, 2, 3, 4, 3, 2, 1, 2, 3, 4, 4, 3, 2, 1, 2, 1}
+	std::ifstream f("C:/Users/Vlad/Desktop/data.json");
+	json data;
 
-	};
-	
+	f>>data;
+
+	//std::cout << data.dump(4) << std::endl;
+
+	const Vector1D<int> data_test =  data["data"];
+
+	/*Array2D<double,3,3> arra;
+	arra.Random(0.0,1);
+	std::cout << arra;
+	arra.SoftMax();
+	std::cout<< arra;*/
 
 
-	std::cout << "Print emission prob" << std::endl;
+	PrintVector(model.emission_prob);
+	model.Train(100, 0.001, data_test);
+	PrintVector(model.emission_prob);
+	/*auto res = model.Viterbi({0,1,2,3});
+	for (int first : res.first)
+	{
+		std::cout << first<< " ";
+	}
+	std::cout << res.second;*/
+
+
+	/*std::cout << "Print emission prob" << std::endl;
 	PrintVector(model.emission_prob);
 	std::cout << "Print trans prob" << std::endl;
 	PrintVector(model.trans_prob);
@@ -30,4 +49,8 @@ int main(int argc, char* argv[])
 		std::cout << "Print trans prob" << std::endl;
 		PrintVector(model.trans_prob);
 	}
+
+	auto out = model.Viterbi({1,2,3,4});
+	std::cout << out.second<<std::endl;
+	PrintVector(out.first);*/
 }

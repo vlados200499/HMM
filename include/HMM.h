@@ -6,8 +6,9 @@ namespace HMMlearn
 {
 	class HMM;
 
-	class VIRTUAL_HMM
 
+	// Model For 1D Observations Train !!!
+	class HMM final
 	{
 	public:
 		int n_observations;
@@ -16,12 +17,12 @@ namespace HMMlearn
 		Vector2D<double> trans_prob;
 		Vector2D<double> emission_prob;
 		int states_size;
-		double epsilon = 1e-5;
+		double epsilon = 1e-3;
 
-	public:
-		VIRTUAL_HMM(int n_states, int n_observations, const Vector1D<double>& start_prob = {},
-		            const Vector2D<double>& trans_prob = {},
-		            const Vector2D<double>& emission_prob = {})
+
+		HMM(const int n_states, const int n_observations,
+		    const Vector1D<double>& start_prob = {}, const Vector2D<double>& trans_prob = {},
+		    const Vector2D<double>& emission_prob = {})
 		{
 			this->states_size = n_states;
 			this->n_observations = n_observations;
@@ -30,7 +31,8 @@ namespace HMMlearn
 
 			if (!start_prob.data())
 			{
-				this->start_prob = GenerateRandomVector(n_states, 0.4, 0.6);
+				this->start_prob = GenerateRandomVector(n_states, 0.0, 1.0);
+				NormalizeVector(&this->start_prob);
 			}
 			else
 			{
@@ -38,7 +40,8 @@ namespace HMMlearn
 			}
 			if (!trans_prob.data())
 			{
-				this->trans_prob = GenerateRandomVector(n_states,n_states, 0.4, 0.6);
+				this->trans_prob = GenerateRandomVector(n_states, n_states, 0.0, 1.0);
+				NormalizeVector(&this->trans_prob);
 			}
 			else
 			{
@@ -46,7 +49,8 @@ namespace HMMlearn
 			}
 			if (!emission_prob.data())
 			{
-				this->emission_prob = GenerateRandomVector(n_states,n_observations, 0.4, 0.6);
+				this->emission_prob = GenerateRandomVector(n_states, n_observations, 0.0, 1.0);
+				NormalizeVector(&this->emission_prob);
 			}
 			else
 			{
@@ -55,71 +59,24 @@ namespace HMMlearn
 		}
 
 
-		virtual ~VIRTUAL_HMM() = default;
-
-
-		virtual double Forward(Vector1D<int> observations) = 0;
-		virtual std::pair<std::vector<int>, double> Viterbi(const Vector1D<int>& observations) = 0;
-		virtual void BaumWelch(Vector1D<int>& observations) = 0;
-		virtual void Train(const int maxIterations, const double convergenceThreshold, Vector1D<int>& observations) = 0;
+		std::pair<std::vector<int>, double> Viterbi(const Vector1D<int>& observations) const;
+		void BaumWelch(const Vector1D<int>& observations);
+		void Train(int maxIterations, double convergenceThreshold, const Vector1D<int>& observations);
+		double Loss(const Vector1D<int>& observations) const;
 
 	private:
-		friend class HMM;
-		virtual void UpdatingObservationProbabilityMatrix(const Vector1D<int>& observations,
-		                                                  const Vector2D<double>& gamma,
-		                                                  int observation_size) = 0;
-		virtual void UpdateModelParameters(Vector1D<int>& observations, int size, Vector2D<double> gamma,
-		                                   Vector3D<double> xi) = 0;
-		virtual void UpdatingTransitionMatrix(const Vector2D<double>& gamma, const Vector3D<double>& xi,
-		                                      int observation_size) = 0;
-
-		virtual void UpdatingInitialProbabilities(const Vector2D<double>& gamma) = 0;
-
-
-		virtual Vector2D<double> ForwardPass(const Vector1D<int>& observations) = 0;
-		virtual Vector2D<double> BackwardPass(const Vector1D<int>& observations) = 0;
-		virtual Vector2D<double> CalculateGammas(const Vector2D<double>& forward, const Vector2D<double>& backward,
-		                                         int observation_size) = 0;
-		virtual Vector3D<double> CalculateXis(const Vector1D<int>& observations, const Vector2D<double>& forward,
-		                                      const Vector2D<double>& backward, int observation_size) = 0;
-
-		virtual double ComputeLogLikelihood(const Vector1D<int>& observations) = 0;
-	};
-
-	// Model For 1D Observations Train !!!
-	class HMM final : public VIRTUAL_HMM
-	{
-	public:
-		HMM(const int n_states, const int n_observations,
-		    const Vector1D<double>& start_prob = {}, const Vector2D<double>& trans_prob = {},
-		    const Vector2D<double>& emission_prob = {})
-			: VIRTUAL_HMM(n_states, n_observations, start_prob, trans_prob, emission_prob)
-		{
-		}
-
-		double Forward(Vector1D<int> observations) override;
-		std::pair<std::vector<int>, double> Viterbi(const Vector1D<int>& observations) override;
-		void BaumWelch(Vector1D<int>& observations) override;
-		void Train(const int maxIterations, const double convergenceThreshold, Vector1D<int>& observations) override;
-		double ComputeLogLikelihood(const Vector1D<int>& observations) override;
-
-	private:
-		Vector2D<double> ForwardPass(const Vector1D<int>& observations) override;
-		Vector2D<double> BackwardPass(const Vector1D<int>& observations) override;
+		Vector2D<double> ForwardPass(const Vector1D<int>& observations) const;
+		Vector2D<double> BackwardPass(const Vector1D<int>& observations) const;
 		Vector2D<double> CalculateGammas(const Vector2D<double>& forward, const Vector2D<double>& backward,
-		                                 int observation_size) override;
+		                                 int observation_size) const;
 		Vector3D<double> CalculateXis(const Vector1D<int>& observations, const Vector2D<double>& forward,
-		                              const Vector2D<double>& backward, int observation_size) override;
+		                              const Vector2D<double>& backward, int observation_size) const;
 		void UpdatingObservationProbabilityMatrix(const Vector1D<int>& observations, const Vector2D<double>& gamma,
-		                                          int observation_size) override;
-		void UpdateModelParameters(Vector1D<int>& observations, int size, Vector2D<double> gamma,
-		                           Vector3D<double> xi) override;
+		                                          int observation_size);
+		void UpdateModelParameters(const Vector1D<int>& observations, int size, const Vector2D<double>& gamma,
+		                           const Vector3D<double>& xi);
 		void UpdatingTransitionMatrix(const Vector2D<double>& gamma, const Vector3D<double>& xi,
-		                              int observation_size) override;
-		void UpdatingInitialProbabilities(const Vector2D<double>& gamma) override;
+		                              int observation_size);
+		void UpdatingInitialProbabilities(const Vector2D<double>& gamma);
 	};
-
-
-	
-
 }
